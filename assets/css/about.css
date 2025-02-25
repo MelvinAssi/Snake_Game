@@ -1,0 +1,16 @@
+:root {
+    --color1: #7B85CA;
+    --color2: #001ac5;
+    --color3: #6b7fdc;
+    --color4: #2C75FF;
+    --color5: #8F90A8;
+    --text-color1:#ffffff;
+    --text-color2:#000000;
+}
+
+
+main {
+    grid-area: main;
+    min-height: 100vh;
+}
+
