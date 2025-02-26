@@ -7,10 +7,21 @@
     --text-color1:#ffffff;
     --text-color2:#000000;
 }
+@font-face {
+    font-family: 'Audiowide';
+    src: url('/asset/fonts/Audiowide-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 
 main {
     grid-area: main;
     min-height: 100vh;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
 }
-
+.container{
+    width: 40%;
+}

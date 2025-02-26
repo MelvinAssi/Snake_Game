@@ -3,10 +3,12 @@
     <head>
         <meta charset="UTF-8">        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/assets/css/games.css">
         <link rel="stylesheet" href="/assets/css/sidebar.css">
         <link rel="stylesheet" href="/assets/css/header.css">
         <link rel="stylesheet" href="/assets/css/footer.css">   
         <script type="text/JavaScript" src="assets/js/sidebar.js" defer></script>
+        <script type="text/JavaScript" src="assets/js/game.js" defer></script>
     </head>    
     <body>
         <nav id="sidebar">
@@ -71,7 +73,10 @@
         <main>                 
             <div class="container">
                 <p>Game<br></p>
-            </div>      
+                <canvas id="canvas" width="600" height="600"></canvas>     
+                <button id="start-btn">start</button>            
+            </div> 
+                
         </main>
 
         <footer>
