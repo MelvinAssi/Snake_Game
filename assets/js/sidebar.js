@@ -1,4 +1,4 @@
-document.addEventListener('click', function () {
+
     const toggleButton = document.getElementById("toggle-btn")
     const sidebar=document.getElementById("sidebar")
     const sidebarState = localStorage.getItem('sidebarState');
@@ -21,4 +21,4 @@ document.addEventListener('click', function () {
             localStorage.setItem('sidebarState', 'open');
         }
     });
-});
+

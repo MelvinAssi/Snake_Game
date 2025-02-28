@@ -7,15 +7,25 @@
 document.addEventListener("DOMContentLoaded", () => {
     let start_btn= document.getElementById("start-btn");
     start_btn.addEventListener("click",startAnimation);
+    let enable_border=document.getElementById("enable_border");
+    enable_border.addEventListener("change", function() {
+        border_enable = enable_border.checked;
+    });
+
+
+
 
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var raf;
     var direction = "right";
     var grid_size =20;
-    var border_enable=true;
+    var border_enable=enable_border.checked;
     var lastTime = 0; 
     var interval = 100;
+    var score=0;
+    var highscore=localStorage.getItem('highscore') ?? 0;//if (highscore == null) highscore = 0;
+    document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore;
     var gameOver=false; 
 
 
@@ -40,6 +50,26 @@ document.addEventListener("DOMContentLoaded", () => {
             this.vy = 0;
         }
     };
+    var fruit = {
+        x: 15+canvas.width/(grid_size)*Math.floor(Math.random() * grid_size),
+        y: 15+canvas.height/(grid_size)*Math.floor(Math.random() * grid_size),
+        radius: canvas.width/(2*grid_size)*0.5,
+        color: "red",
+        draw: function () {
+            console.log(this.x)
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fillStyle = this.color;
+          ctx.fill();
+        },
+        random:function(){
+            this.x=15+canvas.width/(grid_size)*Math.floor(Math.random() * grid_size);
+            this.y=15+canvas.height/(grid_size)*Math.floor(Math.random() * grid_size);
+        },
+        reset: function() {
+        }
+    };
 
     function draw(timestamp) {
         if (gameOver) {
@@ -51,16 +81,39 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.fillStyle = "rgba(255,255,255,0.3)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ball.draw();
+            fruit.draw();
             ball.x += ball.vx;
             ball.y += ball.vy;
+            eatFruit()
             border();
           
         }
         raf = window.requestAnimationFrame(draw);
     }
+    function eatFruit(){
+        if(ball.x==fruit.x && ball.y==fruit.y){
+            console.log("eat")
+            score+=10;
+            updateScore();
+            
+            fruit.random(); 
+        }
+    }
+    function updateScore(){
+        
+        document.getElementById('scoretxt').textContent = 'Score: ' + score;
+        if(score>highscore){
+            highscore=score;
+            localStorage.setItem('highscore', highscore);
+            document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore;
+
+        }
+
+
+    }
     
     function border(){
-        console.log(ball.x);
+        //console.log(ball.x);
         if(border_enable){
             if (ball.y  +ball.radius > canvas.height || ball.y  <= 0) {
                 console.log("gameover")
@@ -133,11 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function resetGame() {
         gameOver = false;
         ball.reset();
+        fruit.random(); 
         direction = "right";
+        score=0;
+        document.getElementById('scoretxt').textContent = 'Score: ' + score;
         raf = null;
     }
     ball.draw();
-
+    fruit.draw();
 
 
 });
