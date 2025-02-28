@@ -1,3 +1,9 @@
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     let start_btn= document.getElementById("start-btn");
     start_btn.addEventListener("click",startAnimation);
@@ -19,28 +25,30 @@ document.addEventListener("DOMContentLoaded", () => {
     var lastTime = 0; 
     var interval = 100;
     var score=0;
-    var highscore=localStorage.getItem('highscore') ?? 0;
+    var highscore=localStorage.getItem('highscore') ?? 0;//if (highscore == null) highscore = 0;
     document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore;
     var gameOver=false; 
 
-    
-    var snake = {
-        body: [{ x: gridStep / 2, y: gridStep / 2 }],
-        Length : 1,
+
+    var ball = {
+        x: gridStep/2,
+        y: gridStep/2,
+        vx: gridStep,
+        vy: 0,
         radius: gridStep/2,
         color: "blue",
         draw: function () {
-            for (let i = 0; i < snake.body.length; i++) {
-                ctx.beginPath();
-                ctx.arc(snake.body[i].x, snake.body[i].y, gridStep / 2, 0, Math.PI * 2, true);
-                ctx.closePath();
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fillStyle = this.color;
+          ctx.fill();
         },
         reset: function() {
-            this.body = [{ x: gridStep / 2, y: gridStep / 2 }];
-            this.Length = 1;
+            this.x = gridStep/2;
+            this.y = gridStep/2;
+            this.vx = gridStep;
+            this.vy = 0;
         }
     };
     var fruit = {
@@ -70,38 +78,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (timestamp - lastTime >= interval) {
             lastTime = timestamp;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            snake.draw();
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ball.draw();
             fruit.draw();
-            moveSnake();            
-            border(); 
-            eatFruit();         
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            eatFruit()
+            border();          
         }
         raf = window.requestAnimationFrame(draw);
     }
-
-    function moveSnake() {
-        let head =  { x: snake.body[0].x, y: snake.body[0].y };;
-        
-        if (direction === "right") head.x += gridStep;
-        if (direction === "left") head.x -= gridStep;
-        if (direction === "up") head.y -= gridStep;
-        if (direction === "down") head.y += gridStep;
-
-        snake.body.unshift(head);
-        
-        if (snake.body.length > snake.Length) {
-            snake.body.pop();
-        }
-    }
-
     function eatFruit(){
-        if (snake.body[0].x === fruit.x && snake.body[0].y === fruit.y) {
-            console.log("eat");
-            score += 10;
-            updateScore();
-            fruit.random();
-            snake.Length++; 
+        if(ball.x==fruit.x && ball.y==fruit.y){
+            console.log("eat")
+            score+=10;
+            updateScore();            
+            fruit.random(); 
         }
     }
     function updateScore(){        
@@ -114,24 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     function border(){
-        for (let i = 1; i < snake.body.length; i++) {
-            if (snake.body[i].x === snake.body[0].x && snake.body[i].y === snake.body[0].y) {
-                console.log("gameover");
-                cancelAnimationFrame(raf);
-                gameOver = true;
-            }
-        }
-        if(border_enable){            
-            if (snake.body[0].y >= canvas.height || (snake.body[0].y <= 0 )||snake.body[0].x>= canvas.width || snake.body[0].x  <= 0) {
+        if(border_enable){
+            if (ball.y+ball.radius > canvas.height || (ball.y  <= 0 )||ball.x+ball.radius > canvas.width || ball.x  <= 0) {
                 console.log("gameover")
                 cancelAnimationFrame(raf)
                 gameOver=true;                
             }
         }else{
-            if (snake.body[0].x < 0) snake.body[0].x = canvas.width - gridStep/2;
-            if (snake.body[0].x >= canvas.width) snake.body[0].x = gridStep/2;
-            if (snake.body[0].y < 0) snake.body[0].y = canvas.height - gridStep/2;
-            if (snake.body[0].y >= canvas.height) snake.body[0].y = gridStep/2;
+            if (ball.y  +ball.radius > canvas.height)ball.y=ball.radius;
+            else if(ball.y <= 0)ball.y=canvas.height-ball.radius;
+            else if (ball.x+ball.radius > canvas.width )ball.x=ball.radius;
+            else if( ball.x <= 0)ball.x=canvas.width-ball.radius;
         }  
     }
 
@@ -140,21 +126,29 @@ document.addEventListener("DOMContentLoaded", () => {
         switch (e.key) {
             case "ArrowRight":
                 if (direction !== "left") { 
+                    ball.vx = gridStep;
+                    ball.vy = 0;
                     direction = "right";
                 }
                 break;
             case "ArrowLeft":
                 if (direction !== "right") {
+                    ball.vx = -gridStep;
+                    ball.vy = 0;
                     direction = "left";
                 }
                 break;
             case "ArrowUp":
                 if (direction !== "down") {
+                    ball.vx = 0;
+                    ball.vy = -gridStep;
                     direction = "up";
                 }
                 break;
             case "ArrowDown":
                 if (direction !== "up") {
+                    ball.vx = 0;
+                    ball.vy = gridStep;
                     direction = "down";
                 }
                 break;
@@ -172,14 +166,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function resetGame() {
         gameOver = false;
-        snake.reset();
+        ball.reset();
         fruit.random(); 
         direction = "right";
         score=0;
         document.getElementById('scoretxt').textContent = 'Score: ' + score;
         raf = null;
     }
-    snake.draw();
+    ball.draw();
     fruit.draw();
 
 
