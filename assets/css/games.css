@@ -14,19 +14,41 @@
 
 main {
     grid-area: main;
-    min-height: 100vh;
+    
+    max-height: calc(100vh - 60px);
     width: 100%;
     display: flex;
+    justify-content: center;
 }
 .container{
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin: 5px; 
 }
-#canvas{
-    max-width: 600px;
-    max-height: 600px; 
+.hud{
+    display: flex;
+    justify-content: space-between;
+    flex-direction:row;
+    list-style: none;
+}
+#start-btn{
+    
+}
+#canvas {
+    width: 100%;
+    max-width: 600px; 
     border: 3px solid black;
+    height: auto;     
+    display: block;
+     
+}
+
+@media (max-width: 300px) {
+    #canvas {
+        max-width: 300px;
+        max-height: 300px; /* Ajuster la hauteur à 300px pour les petits écrans */
+    }
 }
 #snake{
     width: 60px;
@@ -51,5 +73,6 @@ main {
     width: 60px;
     height: 60px;
     background-color:#0051ff 
+
     
 }

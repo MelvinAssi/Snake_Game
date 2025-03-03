@@ -74,17 +74,22 @@
             <div class="container">
                 <p>Game<br></p>
                 <canvas id="canvas" width="600" height="600"></canvas>     
-                <button id="start-btn">start</button>
-                <div>
-                    <input type="checkbox" id="enable_border" name="enable_border" checked />
-                    <label for="enable_border">enable border</label>
-                </div> 
-                <p id="scoretxt">Score: 0</p> 
-                <p id="highscoretxt">Highscore: 0</p>    
+
+                <ul class="hud">                    
+                    <li><button id="start-btn">start</button></li>
+                    <li>
+                        <input type="checkbox" id="enable_border" name="enable_border" checked />
+                        <label for="enable_border">enable border</label>
+                    </li>                    
+                    <li><p id="scoretxt">Score: 0</p></li> 
+                    <li><p id="highscoretxt">Highscore: 0</p></li>                      
+                </ul> 
+
+  
             </div> 
                 
         </main>
-
+        <!--
         <footer>
             <ul>
                 <li><a href="#Rules"><i class=""></i> Rules</a></li>
@@ -94,6 +99,8 @@
             <div class="">Made by Melvin - 2025</div>
             <div class="">© 2025 Snake Game. All rights reserved</div>
         </footer> 
+         -->
+
 
     </body>
 </html>

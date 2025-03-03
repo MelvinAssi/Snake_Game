@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var raf;
@@ -21,26 +24,103 @@ document.addEventListener("DOMContentLoaded", () => {
     var score=0;
     var highscore=localStorage.getItem('highscore') ?? 0;
     document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore;
-    var gameOver=false; 
+    var gameOver=false;
+    
+    
+    const stage1=[
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0]
+    ];
+    const stage2=[
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,1,1,1,1,1,1,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,1,1,1,1,1,1,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0]
+    ];
+    const stage3=[
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,1,0,0,0,0,1,0,0],
+        [0,0,1,1,1,1,1,1,0,0],
+        [0,0,1,0,0,0,0,1,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,1,0,0,0,0,1,0,0],
+        [0,0,1,1,1,1,1,1,0,0],
+        [0,0,1,0,0,0,0,1,0,0],
+        [0,0,0,0,0,0,0,0,0,0]
+    ];
+    
+
+    function adapteStage(stage){
+        let output=[];
+        for(let i=0;i<stage.length;i++){
+            let row=[];            
+            for(let j=0;j<stage[i].length;j++){                
+                for(let k=0;k<grid_size/stage.length;k++){
+                    row.push(stage[i][j]);
+                }
+            }
+            for(let l=0;l<grid_size/stage.length;l++){
+                output.push([...row])
+            }     
+        }
+        return output;
+    }
+    
+    var curentStage=adapteStage(stage2);
+    console.log(curentStage);
+    var wall={
+        color: "brown",
+        draw: function () {
+            for(let i=0;i<curentStage.length;i++){          
+                for(let j=0;j<curentStage[i].length;j++){ 
+                    if(curentStage[i][j]==1){
+                        ctx.beginPath();
+                        ctx.rect(j*gridStep, i*gridStep, gridStep, gridStep);
+                        ctx.closePath();
+                        ctx.fillStyle = this.color;
+                        ctx.fill();
+                    }
+                }                
+            }
+        }
+    }
 
     
     var snake = {
         body: [{ x: gridStep / 2, y: gridStep / 2 }],
-        Length : 1,
+        Length : 3,
         radius: gridStep/2,
         color: "blue",
         draw: function () {
             for (let i = 0; i < snake.body.length; i++) {
                 ctx.beginPath();
-                ctx.arc(snake.body[i].x, snake.body[i].y, gridStep / 2, 0, Math.PI * 2, true);
-                ctx.closePath();
+ 
+                ctx.rect(snake.body[i].x-gridStep/2,snake.body[i].y-gridStep/2, gridStep, gridStep);
+                
                 ctx.fillStyle = this.color;
+                ctx.closePath();
+                
                 ctx.fill();
             }
         },
         reset: function() {
             this.body = [{ x: gridStep / 2, y: gridStep / 2 }];
-            this.Length = 1;
+            this.Length = 3;
         }
     };
     var fruit = {
@@ -57,8 +137,18 @@ document.addEventListener("DOMContentLoaded", () => {
           ctx.fill();
         },
         random:function(){
-            this.x=gridStep*(0.5+Math.floor(Math.random() * grid_size));
-            this.y=gridStep*(0.5+Math.floor(Math.random() * grid_size));
+            let checkWall=true;
+            let gridPosx;
+            let gridPosy;
+            while(checkWall){
+                gridPosx=Math.floor(Math.random() * grid_size);
+                gridPosy=Math.floor(Math.random() * grid_size);
+                if(curentStage[gridPosy][gridPosx]==0){
+                    this.x=gridStep*(0.5+gridPosx);
+                    this.y=gridStep*(0.5+gridPosy);
+                    checkWall=false;
+                }
+            }
         },
         reset: function() {
         }
@@ -71,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (timestamp - lastTime >= interval) {
             lastTime = timestamp;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            wall.draw();
             snake.draw();
             fruit.draw();
             moveSnake();            
@@ -87,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (direction === "left") head.x -= gridStep;
         if (direction === "up") head.y -= gridStep;
         if (direction === "down") head.y += gridStep;
-
+              
         snake.body.unshift(head);
         
         if (snake.body.length > snake.Length) {
@@ -180,7 +271,8 @@ document.addEventListener("DOMContentLoaded", () => {
         raf = null;
     }
     snake.draw();
-    fruit.draw();
+    //fruit.draw();
+    wall.draw();
 
 
 });

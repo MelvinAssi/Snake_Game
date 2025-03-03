@@ -72,15 +72,37 @@
         <main>  
             <div class="container">
                 <h1>Contact</h1>
-                <p>Request type</p>
-                <input type="dropdown" placeholder="Request type" id="Request_type"></input>
-                <p>Email</p>
-                <input type="email" placeholder="Email"  name="email"id="email"></input>    
-                <p>Score</p>
-                <input type="text" placeholder="Score" id="score"></input>                                                    
-                <p>Message</p>
-                <textarea placeholder="message" name="message" rows="4"id="message"></textarea>                
-                <button type="button" class="send-button">Send</button>
+                <form>
+                    <div>
+                        <label for="Request_type">Request type</label>
+                        <select id="Request_type" name="Request_type" required>
+                            <option value="">Select a request type</option>
+                            <option value="Type1">Contact</option>
+                            <option value="Type2">Report bug</option>
+                        </select>
+                    </div>
+                
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Email"
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required
+                               aria-label="Enter your email address">
+                    </div>
+                
+                    <div>
+                        <label for="score">Score</label>
+                        <input type="text" placeholder="Score" id="score" required>
+                    </div>
+                
+                    <div>
+                        <label for="message">Message</label>
+                        <textarea placeholder="Message" name="message" rows="4" id="message" required></textarea>
+                    </div>
+                
+                    <button type="submit" class="send-button">Send</button>
+                </form>
+                
+
             </div>           
         </main>
 
