@@ -72,7 +72,23 @@
 
         <main>                 
             <div class="container">
-                <p>Game<br></p>
+                <div id="selector-container">
+                    <button class="button arrow" id="decrease">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/>
+                        </svg>
+                    </button>
+                    <div class="data">
+                        <div  id="stagename"></div>
+                        <p id="scoretxt">Score: 0</p>
+                        <p id="highscoretxt">Highscore: 0</p>                            
+                    </div>                    
+                    <button class="button arrow" id="increase">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
+                        </svg>
+                    </button>
+                </div>
                 <canvas id="canvas" width="600" height="600"></canvas>     
 
                 <ul class="hud">                    
@@ -80,9 +96,7 @@
                     <li>
                         <input type="checkbox" id="enable_border" name="enable_border" checked />
                         <label for="enable_border">enable border</label>
-                    </li>                    
-                    <li><p id="scoretxt">Score: 0</p></li> 
-                    <li><p id="highscoretxt">Highscore: 0</p></li>                      
+                    </li>                   
                 </ul> 
 
   

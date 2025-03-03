@@ -21,50 +21,115 @@ document.addEventListener("DOMContentLoaded", () => {
     var border_enable=enable_border.checked;
     var lastTime = 0; 
     var interval = 100;
-    var score=0;
-    var highscore=localStorage.getItem('highscore') ?? 0;
-    document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore;
+
     var gameOver=false;
     
     
     const stage1=[
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0]
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     ];
     const stage2=[
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,1,1,1,1,1,1,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,1,1,1,1,1,1,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0]
-    ];
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ]
     const stage3=[
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,1,0,0,0,0,1,0,0],
-        [0,0,1,1,1,1,1,1,0,0],
-        [0,0,1,0,0,0,0,1,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,1,0,0,0,0,1,0,0],
-        [0,0,1,1,1,1,1,1,0,0],
-        [0,0,1,0,0,0,0,1,0,0],
-        [0,0,0,0,0,0,0,0,0,0]
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     ];
-    
+    const stage=[[stage1,stage2,stage3],
+                ["Stage 1","Stage 2","Stage 3"]];
+    let stageName=document.getElementById("stagename");
+    let currentStageIndex =0;
+    stageName.textContent = stage[1][currentStageIndex];
+    var currentStage=adapteStage(stage[0][currentStageIndex]);
 
+    var score=0;
+    let highscore = JSON.parse(localStorage.getItem('highscore') || '[0, 0, 0]');
+    document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
+
+    document.getElementById("decrease").addEventListener("click", () => {
+        if (currentStageIndex > 0) {
+            currentStageIndex--;    
+            stageName.textContent = stage[1][currentStageIndex];
+            document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
+            currentStage=adapteStage(stage[0][currentStageIndex]);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            wall.draw();
+        }
+    });
+    
+    document.getElementById("increase").addEventListener("click", () => {
+        if (currentStageIndex < stage[1].length - 1) {
+            currentStageIndex++; 
+            stageName.textContent = stage[1][currentStageIndex];
+            document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
+            currentStage=adapteStage(stage[0][currentStageIndex]);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            wall.draw();
+        }
+    });
+
+
+
+
+    
+    console.log(stage2.reverse())
     function adapteStage(stage){
         let output=[];
         for(let i=0;i<stage.length;i++){
@@ -81,14 +146,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return output;
     }
     
-    var curentStage=adapteStage(stage2);
-    console.log(curentStage);
+    
+    console.log(currentStage);
     var wall={
         color: "brown",
         draw: function () {
-            for(let i=0;i<curentStage.length;i++){          
-                for(let j=0;j<curentStage[i].length;j++){ 
-                    if(curentStage[i][j]==1){
+            for(let i=0;i<currentStage.length;i++){          
+                for(let j=0;j<currentStage[i].length;j++){ 
+                    if(currentStage[i][j]==1){
                         ctx.beginPath();
                         ctx.rect(j*gridStep, i*gridStep, gridStep, gridStep);
                         ctx.closePath();
@@ -143,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
             while(checkWall){
                 gridPosx=Math.floor(Math.random() * grid_size);
                 gridPosy=Math.floor(Math.random() * grid_size);
-                if(curentStage[gridPosy][gridPosx]==0){
+                if(currentStage[gridPosy][gridPosx]==0){
                     this.x=gridStep*(0.5+gridPosx);
                     this.y=gridStep*(0.5+gridPosy);
                     checkWall=false;
@@ -197,33 +262,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     function updateScore(){        
         document.getElementById('scoretxt').textContent = 'Score: ' + score;
-        if(score>highscore){
-            highscore=score;
-            localStorage.setItem('highscore', highscore);
-            document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore;
+        console.log(highscore[currentStageIndex])
+        if (score > highscore[currentStageIndex]) {
+            console.log("New highscore for stage " + (currentStageIndex + 1));
+            highscore[currentStageIndex] = score;
+            localStorage.setItem('highscore', JSON.stringify(highscore));
+            document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
         }
     }
     
+    
     function border(){
-        for (let i = 1; i < snake.body.length; i++) {
-            if (snake.body[i].x === snake.body[0].x && snake.body[i].y === snake.body[0].y) {
+        let xIndex = Math.floor(snake.body[0].x / gridStep);
+        let yIndex = Math.floor(snake.body[0].y / gridStep);
+
+        if (xIndex >= 0 && xIndex < currentStage[0].length && yIndex >= 0 && yIndex < currentStage.length) {
+            if (currentStage[yIndex][xIndex] == 1) {
                 console.log("gameover");
                 cancelAnimationFrame(raf);
                 gameOver = true;
             }
-        }
-        if(border_enable){            
-            if (snake.body[0].y >= canvas.height || (snake.body[0].y <= 0 )||snake.body[0].x>= canvas.width || snake.body[0].x  <= 0) {
-                console.log("gameover")
-                cancelAnimationFrame(raf)
-                gameOver=true;                
-            }
+        } else if(border_enable){
+            console.log("gameover");
+            cancelAnimationFrame(raf);
+            gameOver = true;
         }else{
+            
             if (snake.body[0].x < 0) snake.body[0].x = canvas.width - gridStep/2;
             if (snake.body[0].x >= canvas.width) snake.body[0].x = gridStep/2;
             if (snake.body[0].y < 0) snake.body[0].y = canvas.height - gridStep/2;
             if (snake.body[0].y >= canvas.height) snake.body[0].y = gridStep/2;
-        }  
+        }        
+
+
+ 
     }
 
 
@@ -253,6 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function startAnimation() {
+        currentStage=stage[0][currentStageIndex]
         if (gameOver) {
             resetGame();        }
         

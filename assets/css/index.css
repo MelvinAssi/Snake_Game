@@ -21,7 +21,7 @@ main {
     align-items: center;
 }
 h1{
-    color: var(--text-color1);
+    color: var(--text-color1mmit);
 }
 .container{
     width: 60%;
