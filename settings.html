@@ -3,11 +3,13 @@
     <head>
         <meta charset="UTF-8">        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/assets/css/contact.css">
+        <link rel="stylesheet" href="/assets/css/settings.css">
         <link rel="stylesheet" href="/assets/css/sidebar.css">
         <link rel="stylesheet" href="/assets/css/header.css">
         <link rel="stylesheet" href="/assets/css/footer.css">   
         <script type="text/JavaScript" src="assets/js/sidebar.js" defer></script>
+        <script type="text/JavaScript" src="assets/js/settings.js" defer></script>
+        
     </head>    
     <body>
         <nav id="sidebar">
@@ -70,6 +72,7 @@
                 </li>
             </ul>
         </nav>
+
         <header>
             <div class="logo">
                 <div class="logo_top"></div>
@@ -77,41 +80,18 @@
             </div>
 
         </header>
-        <main>  
-            <div class="container">
-                <h1>Contact</h1>
-                <form>
-                    <div>
-                        <label for="Request_type">Request type</label>
-                        <select id="Request_type" name="Request_type" required>
-                            <option value="">Select a request type</option>
-                            <option value="Type1">Contact</option>
-                            <option value="Type2">Report bug</option>
-                        </select>
-                    </div>
-                
-                    <div>
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Email"
-                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required
-                               aria-label="Enter your email address">
-                    </div>
-                
-                    <div>
-                        <label for="score">Score</label>
-                        <input type="text" placeholder="Score" id="score" required>
-                    </div>
-                
-                    <div>
-                        <label for="message">Message</label>
-                        <textarea placeholder="Message" name="message" rows="4" id="message" required></textarea>
-                    </div>
-                
-                    <button type="submit" class="send-button">Send</button>
-                </form>
-                
 
-            </div>           
+        <main> 
+            <div class="container">
+                <h1>Settings</h1>
+                <div>
+                    <label for="enable_border">enable border</label>
+                    <input type="checkbox" id="enable_border_chkb" name="enable_border" checked />
+                </div>
+                <button id="clear_highscore_btn" >Clear HighScore</button> 
+
+            </div>                
+
         </main>
 
         <footer>
@@ -120,8 +100,11 @@
                 <li><a href="#Contact"><i class=""></i> Contact</a></li>
                 <li><a href="#Privacy Policy"><i class=""></i> Privacy Policy</a></li>
             </ul>
-            <div class="">Made by Melvin - 2025</div>
-            <div class="">© 2025 Snake Game. All rights reserved</div>
+            <div class="info">
+                <div class="">Made by Melvin - 2025</div>
+                <div class="">© 2025 Snake Game. All rights reserved</div>
+            </div>
+
         </footer> 
 
     </body>

@@ -1,10 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let start_btn= document.getElementById("start-btn");
+    let start_screen=document.getElementById("start-screen");
+    start_screen.style.display="flex";    
+    let gameover_screen=document.getElementById("gameover-screen");
+    gameover_screen.style.display="none"; 
+
+    let start_btn= document.getElementById("play-btn");
     start_btn.addEventListener("click",startAnimation);
-    let enable_border=document.getElementById("enable_border");
-    enable_border.addEventListener("change", function() {
-        border_enable = enable_border.checked;
-    });
+    let retry_btn= document.getElementById("retry-btn");
+    retry_btn.addEventListener("click",resetGame);
+
+
+    
 
 
 
@@ -18,7 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
     var direction = "right";
     var grid_size =20;
     var gridStep = canvas.width / grid_size;
-    var border_enable=enable_border.checked;
+    
+    var border_enable = localStorage.getItem('enable_border') === "true" ? true : false;
+    
     var lastTime = 0; 
     var interval = 100;
 
@@ -92,19 +100,46 @@ document.addEventListener("DOMContentLoaded", () => {
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     ];
-    const stage=[[stage1,stage2,stage3],
-                ["Stage 1","Stage 2","Stage 3"]];
+    const stage4=[
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ];
+    const stage=[[stage1,stage2,stage3,stage4],
+                ["Stage 1","Stage 2","Stage 3","Stage 4"]];
     let stageName=document.getElementById("stagename");
     let currentStageIndex =0;
     stageName.textContent = stage[1][currentStageIndex];
     var currentStage=adapteStage(stage[0][currentStageIndex]);
 
     var score=0;
-    let highscore = JSON.parse(localStorage.getItem('highscore') || '[0, 0, 0]');
+    let highscore = JSON.parse(localStorage.getItem('highscore') || '[0, 0, 0, 0]');
     document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
 
     document.getElementById("decrease").addEventListener("click", () => {
         if (currentStageIndex > 0) {
+            cancelAnimationFrame(raf);
+            raf=null;
+            snake.reset();
+            start_screen.style.display="flex";
+            gameover_screen.style.direction="none";
             currentStageIndex--;    
             stageName.textContent = stage[1][currentStageIndex];
             document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
@@ -116,6 +151,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.getElementById("increase").addEventListener("click", () => {
         if (currentStageIndex < stage[1].length - 1) {
+            cancelAnimationFrame(raf);
+            raf=null;
+            snake.reset();
+            start_screen.style.display="flex";
+            gameover_screen.style.direction="none";
             currentStageIndex++; 
             stageName.textContent = stage[1][currentStageIndex];
             document.getElementById('highscoretxt').textContent = 'Highscore: ' + highscore[currentStageIndex];
@@ -194,24 +234,26 @@ document.addEventListener("DOMContentLoaded", () => {
         radius: gridStep/2*0.5,
         color: "red",
         draw: function () {
-            console.log(this.x)
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
           ctx.closePath();
           ctx.fillStyle = this.color;
           ctx.fill();
         },
-        random:function(){
-            let checkWall=true;
-            let gridPosx;
-            let gridPosy;
-            while(checkWall){
-                gridPosx=Math.floor(Math.random() * grid_size);
-                gridPosy=Math.floor(Math.random() * grid_size);
-                if(currentStage[gridPosy][gridPosx]==0){
-                    this.x=gridStep*(0.5+gridPosx);
-                    this.y=gridStep*(0.5+gridPosy);
-                    checkWall=false;
+        random :function () {
+            let checkWall = true;
+            let gridPosx, gridPosy;
+            const snakePositions = new Set(snake.body.map(s => `${s.x},${s.y}`));
+            while (checkWall) {
+                gridPosx = Math.floor(Math.random() * grid_size);
+                gridPosy = Math.floor(Math.random() * grid_size);
+                
+         
+                if (currentStage[gridPosy][gridPosx] === 0 && !snakePositions.has(`${gridPosx * gridStep},${gridPosy * gridStep}`)) {
+ 
+                    this.x = gridPosx * gridStep + gridStep / 2;
+                    this.y = gridPosy * gridStep + gridStep / 2;
+                    checkWall = false;
                 }
             }
         },
@@ -234,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
             eatFruit();         
         }
         raf = window.requestAnimationFrame(draw);
+
     }
 
     function moveSnake() {
@@ -273,19 +316,33 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
     function border(){
+        for (let i = 1; i < snake.body.length; i++) {
+            if (snake.body[i].x === snake.body[0].x && snake.body[i].y === snake.body[0].y) {
+                console.log("gameover");
+                cancelAnimationFrame(raf);
+                
+                gameOver = true;
+                gameOverHandler();
+            }
+        }
         let xIndex = Math.floor(snake.body[0].x / gridStep);
         let yIndex = Math.floor(snake.body[0].y / gridStep);
 
         if (xIndex >= 0 && xIndex < currentStage[0].length && yIndex >= 0 && yIndex < currentStage.length) {
             if (currentStage[yIndex][xIndex] == 1) {
+ 
                 console.log("gameover");
                 cancelAnimationFrame(raf);
                 gameOver = true;
+                gameOverHandler();
             }
         } else if(border_enable){
+            console.log( "la bordure"+border_enable)
             console.log("gameover");
             cancelAnimationFrame(raf);
+            
             gameOver = true;
+            gameOverHandler();
         }else{
             
             if (snake.body[0].x < 0) snake.body[0].x = canvas.width - gridStep/2;
@@ -326,26 +383,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function startAnimation() {
         currentStage=stage[0][currentStageIndex]
+        start_screen.style.display="none";
+        console.log("start Animation + raf: "+raf)
         if (gameOver) {
-            resetGame();        }
+            resetGame();      
+          }
         
         if (!raf) {
+            console.log("raf")
             raf = window.requestAnimationFrame(draw);
         }
+    }
+    function gameOverHandler(){
+        //cancelAnimationFrame(raf);
+        gameover_screen.style.display="flex";
+        raf = null;
+        //resetGame()
     }
 
     function resetGame() {
         gameOver = false;
-        snake.reset();
-        fruit.random(); 
-        direction = "right";
-        score=0;
+        score = 0;
         document.getElementById('scoretxt').textContent = 'Score: ' + score;
+        
+        snake.reset();
+        fruit.random();
+        direction = "right";
+        
+        if (raf) {
+            cancelAnimationFrame(raf);
+        }
         raf = null;
+        gameover_screen.style.display="none";
+        startAnimation(); 
     }
-    snake.draw();
-    //fruit.draw();
-    wall.draw();
 
 
 });
