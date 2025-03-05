@@ -22,18 +22,51 @@ main {
     justify-content: center;  
     align-items: center;
 }
-.container{
+
+.container {
     width: 80%;
-    color: var(--text-color1);
     background-color: var(--color3);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    color: var(--text-color1); 
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3); 
 }
-h1{
-    font-size: 40px;
-    padding-bottom: 10px;
+h1 {
+    font-size: 48px; 
+    font-family: 'Audiowide', sans-serif;
+    padding-bottom: 20px;
+    text-align: center;
+    color: var(--text-color1);  
 }
-p{
+
+
+p {
+    
     font-size: 18px;
+    margin-bottom: 15px;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 800px) {
+    .container {       
+        padding: 10px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p, ul {
+        font-size: 0.9rem;
+    }
 }

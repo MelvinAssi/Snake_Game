@@ -9,14 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let retry_btn= document.getElementById("retry-btn");
     retry_btn.addEventListener("click",resetGame);
 
+    let dpad = document.getElementById("dpad");
+    if (window.innerWidth > 800) {
+        dpad.style.display = "none";
+    } else {
+        dpad.style.display = localStorage.getItem("mobile_mode") === "true" ? "flex" : "none";
+    }
+
 
     
 
 
 
 
-
-
+    var eatAppleSound = new Audio('assets/sound/apple-crunch-215258.mp3');
+    var hitWallSound = new Audio('assets/sound/hit-rock-02-266304.mp3');
+    eatAppleSound.volume=localStorage.getItem("volumeControl");
+    hitWallSound.volume=localStorage.getItem("volumeControl")
 
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
@@ -296,7 +305,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function eatFruit(){
         if (snake.body[0].x === fruit.x && snake.body[0].y === fruit.y) {
-            console.log("eat");
+            eatAppleSound.play();
+            eatAppleSound.playbackRate = 2;
+            setTimeout(function() {
+                eatAppleSound.pause();
+                eatAppleSound.currentTime = 0; 
+            }, 500); 
+
+
+
             score += 10;
             updateScore();
             fruit.random();
@@ -318,7 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function border(){
         for (let i = 1; i < snake.body.length; i++) {
             if (snake.body[i].x === snake.body[0].x && snake.body[i].y === snake.body[0].y) {
-                console.log("gameover");
+                hitWallSound.currentTime = 0.3; 
+                hitWallSound.play(); 
                 cancelAnimationFrame(raf);
                 
                 gameOver = true;
@@ -330,19 +348,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (xIndex >= 0 && xIndex < currentStage[0].length && yIndex >= 0 && yIndex < currentStage.length) {
             if (currentStage[yIndex][xIndex] == 1) {
+                hitWallSound.currentTime = 0.3; 
+                hitWallSound.play();                
  
-                console.log("gameover");
-                cancelAnimationFrame(raf);
                 gameOver = true;
                 gameOverHandler();
             }
         } else if(border_enable){
-            console.log( "la bordure"+border_enable)
-            console.log("gameover");
+            hitWallSound.currentTime = 0.3; 
+            hitWallSound.play(); 
             cancelAnimationFrame(raf);
             
             gameOver = true;
             gameOverHandler();
+            
         }else{
             
             if (snake.body[0].x < 0) snake.body[0].x = canvas.width - gridStep/2;
@@ -354,6 +373,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
  
     }
+    
+    document.getElementById("right").addEventListener("click", () => {
+        if (direction !== "left") { 
+            direction = "right";
+        }
+    });
+    
+    document.getElementById("left").addEventListener("click", () => {
+        if (direction !== "right") {
+            direction = "left";
+        }
+    });
+    
+    document.getElementById("up").addEventListener("click", () => {
+        if (direction !== "down") {
+            direction = "up";
+        }
+    });
+    
+    document.getElementById("down").addEventListener("click", () => {
+        if (direction !== "up") {
+            direction = "down";
+        }
+    });
 
 
     window.addEventListener("keydown", (e) => {

@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">        
+        <meta charset="UTF-8">  
+        <title>Rules - Snake Game</title>
+      
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+            script-src 'self' ; 
+            style-src 'self' ;
+            font-src 'self';
+            img-src 'self'  data: ;"/> 
+        
         <link rel="stylesheet" href="/assets/css/rules.css">
         <link rel="stylesheet" href="/assets/css/sidebar.css">
         <link rel="stylesheet" href="/assets/css/header.css">
@@ -44,7 +52,7 @@
                         <span>Settings</span>
                     </a>                    
                 </li>
-                <li>
+                <li  class="active">
                     <a href="rules.html">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                             <path d="M160-120v-720h640v400H240v80h200v80H240v80h200v80H160Zm456 0L504-232l56-56 56 56 142-142 56 56-198 198ZM240-520h200v-80H240v80Zm280 0h200v-80H520v80ZM240-680h200v-80H240v80Zm280 0h200v-80H520v80Z"/>
@@ -60,7 +68,7 @@
                         <span>Contact</span>
                     </a>                    
                 </li>
-                <li class="active">
+                <li>
                     <a href="about.html">                        
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                             <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
@@ -77,16 +85,23 @@
             </div>
         </header>
 
+
         <main>  
             <div class="container">
-                <h1>Rules of the game</h1>
-                <p>1. Controls:</p>
-                <p>- Use the directional arrows (↑ ↓ ← →) to move the snake.</p>                
-                <p>2. Objective:</p>
-                <p>- Eat the apples to make the snake grow.</p>
-                <p>- Avoid touching the walls or your own body.</p>                
-                <p>3. End of game:</p>
-                <p>- The game ends if the snake touches a wall or its own body.</p>
+                <h1>Rules of the game</h1>        
+                <section>
+                    <h2>1. Controls:</h2>
+                    <p>- Use the directional arrows (↑ ↓ ← →) to move the snake.</p>
+                </section>                
+                <section>
+                    <h2>2. Objective:</h2>
+                    <p>- Eat the apples to make the snake grow.</p>
+                    <p>- Avoid touching the walls or your own body.</p>
+                </section>                
+                <section>
+                    <h2>3. End of game:</h2>
+                    <p>-  The game ends if the snake touches a wall or its own body.</p>
+                </section>
             </div>  
         </main>
 

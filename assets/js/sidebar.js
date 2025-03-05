@@ -7,7 +7,7 @@
         sidebar.classList.add('close');
     }
     setTimeout(() => {
-        sidebar.style.transition = 'width 300ms ease-in-out, padding 300ms ease-in-out'; // Active la transition après le délai
+        sidebar.style.transition = 'width 300ms ease-in-out, padding 300ms ease-in-out'; 
     }, 10);
 
     toggleButton.addEventListener('click', () => {

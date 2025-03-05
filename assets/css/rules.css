@@ -20,18 +20,53 @@ main {
     justify-content: center;  
     align-items: center;
 }
-.container{
+.container {
     width: 80%;
     color: var(--text-color1);
     background-color: var(--color3);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    margin-top: 50px;  
 }
-h1{
+
+h1 {
     padding-bottom: 10px;
-    font-size: 40px;
+    font-size: 2.5rem;
+    color: var(--text-color1);
 }
-p{
+section {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+p {
     font-size: 18px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 800px) {
+    .container {
+       
+        padding: 10px;
+        margin: 10px;
+        align-self: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p, ul {
+        font-size: 1rem;
+    }
 }
